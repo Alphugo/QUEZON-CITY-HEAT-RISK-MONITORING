@@ -7,10 +7,11 @@
 import { motion } from "motion/react";
 
 interface RightPanelProps {
-  heatIndex:   number;
-  temperature: number;
-  humidity:    number;
-  subject:     any; // From SUBJECTS array
+  environmentalHI: number;
+  effectiveHI:     number;
+  temperature:     number;
+  humidity:        number;
+  subject:         any; // From SUBJECTS array
 }
 
 // ── Shared stat box ───────────────────────────────────────────────────────────
@@ -96,14 +97,16 @@ function StressProfile({ subject }: { subject: any }) {
 function FormulaInfo({
   temperature,
   humidity,
-  heatIndex,
+  environmentalHI,
+  effectiveHI,
 }: {
-  temperature: number;
-  humidity:    number;
-  heatIndex:   number;
+  temperature:     number;
+  humidity:        number;
+  environmentalHI: number;
+  effectiveHI:     number;
 }) {
   const formulaActive = temperature >= 27 && humidity >= 25;
-  const delta         = heatIndex - temperature;
+  const delta         = effectiveHI - temperature;
 
   return (
     <div
@@ -140,6 +143,13 @@ function FormulaInfo({
       )}
 
       <div className="flex justify-between items-center mb-1">
+        <span style={{ color: "rgba(255,255,255,0.45)" }}>Environmental HI</span>
+        <span className="font-bold" style={{ color: "rgba(255,255,255,0.7)" }}>
+          {environmentalHI.toFixed(1)}°C
+        </span>
+      </div>
+
+      <div className="flex justify-between items-center mb-1">
         <span style={{ color: "rgba(255,255,255,0.45)" }}>Feels hotter by</span>
         <span className="font-bold" style={{ color: "rgba(0,229,255,0.8)" }}>
           +{delta.toFixed(1)}°C
@@ -149,7 +159,7 @@ function FormulaInfo({
       <div className="flex justify-between items-center">
         <span style={{ color: "rgba(255,255,255,0.45)" }}>Apparent temp</span>
         <span className="font-bold" style={{ color: "#FF6B00" }}>
-          {heatIndex.toFixed(2)}°C
+          {effectiveHI.toFixed(2)}°C
         </span>
       </div>
     </div>
@@ -210,9 +220,9 @@ function PageasaLegend() {
 }
 
 // ── Main Export ───────────────────────────────────────────────────────────────
-export function RightPanel({ heatIndex, temperature, humidity, subject }: RightPanelProps) {
-  const hiF = heatIndex * 9 / 5 + 32;
-  const hiK = heatIndex + 273.15;
+export function RightPanel({ environmentalHI, effectiveHI, temperature, humidity, subject }: RightPanelProps) {
+  const hiF = effectiveHI * 9 / 5 + 32;
+  const hiK = effectiveHI + 273.15;
   const hiR = hiF + 459.67;
 
   return (
@@ -237,11 +247,11 @@ export function RightPanel({ heatIndex, temperature, humidity, subject }: RightP
           className="text-xs font-bold tracking-widest uppercase mb-2"
           style={{ color: "#00E5FF" }}
         >
-          Heat Index
+          Effective Heat Index
         </div>
 
         <motion.div
-          key={Math.round(heatIndex * 10)}
+          key={Math.round(effectiveHI * 10)}
           className="font-black"
           initial={{ scale: 1.08 }}
           animate={{ scale: 1 }}
@@ -251,14 +261,15 @@ export function RightPanel({ heatIndex, temperature, humidity, subject }: RightP
             textShadow: "0 0 25px rgba(255,107,0,0.8), 0 0 50px rgba(255,107,0,0.4)",
           }}
         >
-          {heatIndex.toFixed(1)}
+          {effectiveHI.toFixed(1)}
           <span className="text-2xl" style={{ color: "rgba(255,107,0,0.7)" }}>°C</span>
         </motion.div>
 
         <FormulaInfo
           temperature={temperature}
           humidity={humidity}
-          heatIndex={heatIndex}
+          environmentalHI={environmentalHI}
+          effectiveHI={effectiveHI}
         />
       </div>
 

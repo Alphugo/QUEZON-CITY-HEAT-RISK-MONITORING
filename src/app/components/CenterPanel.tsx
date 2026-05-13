@@ -32,7 +32,8 @@ interface CenterPanelProps {
   selectedSubject: number;
   temperature:     number;
   humidity:        number;
-  heatIndex:       number;
+  environmentalHI: number;
+  effectiveHI:     number;
 }
 
 export function CenterPanel({
@@ -40,7 +41,8 @@ export function CenterPanel({
   selectedSubject,
   temperature,
   humidity,
-  heatIndex,
+  environmentalHI,
+  effectiveHI,
 }: CenterPanelProps) {
   const Char     = CharacterComponents[selectedSubject];
   const subject  = SUBJECTS[selectedSubject];
@@ -58,7 +60,7 @@ export function CenterPanel({
 
   // ── Stress Intensity Scaling (Hybrid Model) ──────────────────────────────
   const { burden, tolerance } = subject;
-  const effectiveHI   = heatIndex + (burden - tolerance);
+  // Use effectiveHI directly as passed from parent
   const stressFactor  = Math.max(0, (effectiveHI - 27) / 25); // 0.0 at 27C, 1.0 at 52C
 
   // Progressive effect counts — now scaled by individual stressFactor
@@ -162,7 +164,7 @@ export function CenterPanel({
           style={{ filter: (isExtCaution || isDangerPlus) ? "url(#heat-distortion)" : "none" }}
         >
           {/* 3D City Background */}
-          <CityScene temperature={heatIndex} />
+          <CityScene temperature={environmentalHI} />
 
           {/* Character — z-[10] */}
           <AnimatePresence mode="wait">
@@ -474,149 +476,7 @@ export function CenterPanel({
           />
         )}
 
-        {/* ── Character — z-[10] ──────────────────────────────────────────── */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedSubject}
-            className="relative z-[10]"
-            style={{ width: 300, height: 460 }}
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{
-              opacity: 1,
-              scale:   1,
-              y:  isExtreme ? [-2, 2, -2]          : [0, -6, 0],
-              x:  isExtreme ? [-2, 2, -1, 2, -2]   : 0,
-            }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{
-              opacity: { duration: 0.3 },
-              scale:   { duration: 0.3 },
-              y: { duration: isExtreme ? 0.3 : 2.5, repeat: Infinity, ease: "easeInOut" },
-              x: isExtreme ? { duration: 0.15, repeat: Infinity } : {},
-            }}
-          >
-            {/* Heat aura — CAUTION+ (HI ≥ 27°C), intensity per threshold */}
-            {isCautionPlus && (
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: `radial-gradient(ellipse at 50% 40%,
-                    ${isExtreme
-                      ? "rgba(255,0,30,0.4)"
-                      : isDanger
-                      ? "rgba(255,68,0,0.3)"
-                      : isExtCaution
-                      ? "rgba(255,140,0,0.2)"
-                      : "rgba(255,215,0,0.1)"
-                    } 0%,
-                    ${isExtreme
-                      ? "rgba(255,30,0,0.25)"
-                      : isDanger
-                      ? "rgba(255,100,0,0.15)"
-                      : isExtCaution
-                      ? "rgba(255,180,30,0.08)"
-                      : "rgba(255,215,0,0.04)"
-                    } 35%,
-                    transparent 70%
-                  )`,
-                  filter:    `blur(${isDangerPlus ? 10 : 5}px)`,
-                  transform: "scale(1.3, 1.2)",
-                }}
-                animate={{
-                  opacity: isExtreme
-                    ? [0.7, 1, 0.7]
-                    : isDanger
-                    ? [0.5, 0.8, 0.5]
-                    : isExtCaution
-                    ? [0.3, 0.5, 0.3]
-                    : [0.2, 0.35, 0.2],
-                  scale: isExtreme
-                    ? [1.25, 1.45, 1.25]
-                    : isDanger
-                    ? [1.2, 1.35, 1.2]
-                    : [1.15, 1.25, 1.15],
-                }}
-                transition={{
-                  duration: isExtreme ? 0.6 : isDanger ? 1 : 2,
-                  repeat:   Infinity,
-                  ease:     "easeInOut",
-                }}
-              />
-            )}
 
-            {/* Heat shimmer ring — DANGER+ (HI ≥ 42°C) */}
-            {isDangerPlus && (
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  border:       `${isExtreme ? 3 : 2}px solid ${isExtreme ? "rgba(255,0,30,0.4)" : "rgba(255,100,0,0.25)"}`,
-                  borderRadius: "50%",
-                  transform:    "scale(1.1)",
-                  filter:       "blur(3px)",
-                }}
-                animate={{ scale: [1.1, isExtreme ? 1.6 : 1.4, 1.1], opacity: [0.5, 0, 0.5] }}
-                transition={{
-                  duration: isExtreme ? 1.2 : 2,
-                  repeat:   Infinity,
-                  ease:     "easeInOut",
-                }}
-              />
-            )}
-
-            {/* Character SVG */}
-            <Char />
-
-            {/* Sweat drops on character body */}
-            {Array.from({ length: sweatDrops }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full"
-                style={{
-                  width:     5,
-                  height:    8,
-                  left:      `${20 + i * 12}%`,
-                  top:       "20%",
-                  background:"linear-gradient(to bottom, #7FEFFF, #00B4CC)",
-                  boxShadow: "0 0 4px rgba(0,229,255,0.6)",
-                }}
-                animate={{ y: [0, 80], opacity: [0.9, 0], scaleY: [1, 0.6] }}
-                transition={{ duration: 1.0, repeat: Infinity, delay: i * 0.22, ease: "easeIn" }}
-              />
-            ))}
-
-            {/* Water pour — construction worker at DANGER+ (HI ≥ 42°C) */}
-            {selectedSubject === 0 && isDangerPlus && (
-              <div className="absolute" style={{ top: "8%", right: "10%" }}>
-                {Array.from({ length: isExtreme ? 8 : 4 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute rounded-full"
-                    style={{
-                      width:      isExtreme ? 4 : 3,
-                      height:     isExtreme ? 12 : 8,
-                      left:       i * 4,
-                      background: "rgba(0,180,255,0.7)",
-                    }}
-                    animate={{ y: [0, isExtreme ? 50 : 35], opacity: [0.8, 0] }}
-                    transition={{ duration: isExtreme ? 0.5 : 0.7, repeat: Infinity, delay: i * 0.1 }}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Fan wave — Civilian at CAUTION+ */}
-            {selectedSubject === 4 && isCautionPlus && (
-              <motion.div
-                className="absolute"
-                style={{ top: "8%", left: "5%", fontSize: 20 }}
-                animate={{ rotate: [-15, 15, -15] }}
-                transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                💨
-              </motion.div>
-            )}
-          </motion.div>
-        </AnimatePresence>
 
         {/* Subject name badge — z-[20] */}
         <div
@@ -641,7 +501,7 @@ export function CenterPanel({
             backdropFilter:"blur(8px)",
           }}
         >
-          HI: {heatIndex.toFixed(1)}°C
+          Eff. HI: {effectiveHI.toFixed(1)}°C
         </div>
       </div>
 

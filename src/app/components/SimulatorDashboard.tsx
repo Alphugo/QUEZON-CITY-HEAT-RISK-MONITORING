@@ -4,7 +4,7 @@ import { Home } from "lucide-react";
 import { LeftPanel } from "./LeftPanel";
 import { CenterPanel } from "./CenterPanel";
 import { RightPanel } from "./RightPanel";
-import { calcHeatIndex, getRisk, SUBJECTS } from "./heatUtils";
+import { calcHeatIndex, calcEffectiveHI, getRisk, SUBJECTS } from "./heatUtils";
 
 interface SimulatorDashboardProps {
   onBack?: () => void;
@@ -24,8 +24,9 @@ export function SimulatorDashboard({
 }: SimulatorDashboardProps) {
 
   const subjectData = SUBJECTS[selectedSubject];
-  const heatIndex = calcHeatIndex(temperature, humidity);
-  const risk = getRisk(heatIndex, subjectData.burden, subjectData.tolerance);
+  const environmentalHI = calcHeatIndex(temperature, humidity);
+  const effectiveHI = calcEffectiveHI(environmentalHI, subjectData.burden, subjectData.tolerance);
+  const risk = getRisk(environmentalHI, subjectData.burden, subjectData.tolerance);
 
   return (
     <div
@@ -107,14 +108,16 @@ export function SimulatorDashboard({
             selectedSubject={selectedSubject}
             temperature={temperature}
             humidity={humidity}
-            heatIndex={heatIndex}
+            environmentalHI={environmentalHI}
+            effectiveHI={effectiveHI}
           />
         </div>
 
         {/* RIGHT — Telemetry HUD */}
         <div className="w-full lg:w-[26%] lg:overflow-y-auto lg:flex-shrink-0 order-3">
           <RightPanel 
-            heatIndex={heatIndex} 
+            environmentalHI={environmentalHI}
+            effectiveHI={effectiveHI} 
             temperature={temperature}
             humidity={humidity}
             subject={subjectData}

@@ -93,6 +93,14 @@ export function calcHeatIndex(tempC: number, humidity: number): number {
   return Math.max(tempC, hiC);
 }
 
+/**
+ * Calculates the Effective Heat Index based on the Hybrid Model
+ * Effective HI = Ambient HI + (Burden - Tolerance)
+ */
+export function calcEffectiveHI(hi: number, burden: number, tolerance: number): number {
+  return hi + (burden - tolerance);
+}
+
 // ── Risk Level Types ──────────────────────────────────────────────────────────
 export type RiskLevel =
   | "SAFE"

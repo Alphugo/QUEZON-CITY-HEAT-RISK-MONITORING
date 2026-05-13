@@ -162,9 +162,41 @@ export function Student() {
       <path d="M48 93 L54 101 L60 93 L66 101 L72 93" fill="none" stroke="#2B4A8F" strokeWidth="2.5" />
       {/* Pocket */}
       <rect x="64" y="108" width="14" height="12" fill="#EEE" stroke="#CCC" strokeWidth="1" rx="1" />
-      {/* DepEd patch */}
-      <circle cx="44" cy="110" r="7" fill="#2B4A8F" opacity="0.8" />
-      <text x="44" y="113" textAnchor="middle" fill="white" fontSize="5" fontWeight="bold">DepEd</text>
+      {/* HD OLFU Logo (Our Lady of Fatima University) */}
+      <g transform="translate(36, 102) scale(0.8)">
+        {/* Outer Green Ring */}
+        <circle cx="10" cy="10" r="10" fill="#1B4D3E" />
+        <circle cx="10" cy="10" r="8.5" fill="white" />
+        <circle cx="10" cy="10" r="8" fill="#1B4D3E" />
+        
+        {/* Shield Background */}
+        <circle cx="10" cy="10" r="6.5" fill="white" />
+        
+        {/* Quadrant Lines */}
+        <rect x="9.7" y="3.5" width="0.6" height="13" fill="#1B4D3E" />
+        <rect x="3.5" y="9.7" width="13" height="0.6" fill="#1B4D3E" />
+
+        {/* Top-Left: Cross */}
+        <path d="M6 6 L8 7 L7 9 L5 8 Z" fill="#1B4D3E" /> {/* Stylized small cross shape */}
+        <path d="M5.5 5.5 L7.5 5.5 L7.5 7.5 L5.5 7.5 Z" fill="#1B4D3E" transform="translate(0.5, 0.5) rotate(45, 6.5, 6.5)" />
+
+        {/* Top-Right: Book/Laurel */}
+        <rect x="11.5" y="5.5" width="5" height="3" fill="#1B4D3E" rx="0.5" />
+        <circle cx="14" cy="8" r="1.5" fill="none" stroke="#1B4D3E" strokeWidth="0.5" />
+
+        {/* Bottom-Left: Stripes */}
+        <rect x="4.5" y="11" width="1" height="4.5" fill="#1B4D3E" />
+        <rect x="6" y="11" width="1" height="4.5" fill="#1B4D3E" />
+        <rect x="7.5" y="11" width="1" height="4.5" fill="#1B4D3E" />
+
+        {/* Bottom-Right: Lion (stylized) */}
+        <path d="M11 11 Q12 11 13 12 Q14 13 14 14.5 L12 14.5 Z" fill="#1B4D3E" />
+        <circle cx="13" cy="11.5" r="0.8" fill="#1B4D3E" />
+
+        {/* Bottom Banner */}
+        <path d="M4 16 Q10 18 16 16 L16 18 Q10 20 4 18 Z" fill="#1B4D3E" />
+        <text x="10" y="8.5" textAnchor="middle" fill="#1B4D3E" fontSize="1.8" fontWeight="bold">1967</text>
+      </g>
       {/* Arms - white polo */}
       <path d="M28 93 L14 160 Q12 167 18 169 L26 169 L36 105 Z" fill="#F0F0F0" />
       <path d="M92 93 L106 160 Q108 167 102 169 L94 169 L84 105 Z" fill="#F0F0F0" />
@@ -182,14 +214,6 @@ export function Student() {
       <rect x="62" y="210" width="32" height="10" fill="#111" rx="3" />
       <rect x="28" y="214" width="28" height="4" fill="#FFF" rx="1" opacity="0.3" />
       <rect x="64" y="214" width="28" height="4" fill="#FFF" rx="1" opacity="0.3" />
-      {/* Red Backpack */}
-      <rect x="84" y="95" width="22" height="32" fill="#CC2200" rx="4" />
-      <rect x="86" y="97" width="18" height="14" fill="#AA1800" rx="2" />
-      <rect x="88" y="113" width="14" height="12" fill="#BB1F00" rx="2" />
-      <circle cx="95" cy="124" r="2.5" fill="#FF6644" />
-      {/* Backpack straps */}
-      <path d="M84 95 Q82 85 60 86" fill="none" stroke="#8B1400" strokeWidth="3" />
-      <path d="M88 95 Q86 90 64 91" fill="none" stroke="#8B1400" strokeWidth="2" />
     </svg>
   );
 }
@@ -197,61 +221,52 @@ export function Student() {
 export function StreetVendor() {
   return (
     <svg viewBox="0 0 120 220" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-      {/* Cap */}
-      <ellipse cx="60" cy="43" rx="22" ry="5.5" fill="#1A2F6A" />
-      <path d="M39 43 Q39 23 60 21 Q81 23 81 43" fill="#233A80" />
-      <ellipse cx="60" cy="45" rx="25" ry="5" fill="#142259" />
+      {/* ── THE VENDOR (Behind) ── */}
       {/* Head */}
-      <ellipse cx="60" cy="65" rx="19" ry="21" fill="#C68642" />
-      <ellipse cx="60" cy="79" rx="13" ry="8" fill="#A0693A" opacity="0.3" />
-      {/* Ears */}
-      <ellipse cx="41" cy="65" rx="4" ry="5" fill="#B87030" />
-      <ellipse cx="79" cy="65" rx="4" ry="5" fill="#B87030" />
-      {/* Face */}
-      <ellipse cx="52" cy="62" rx="2.8" ry="3" fill="white" />
-      <ellipse cx="68" cy="62" rx="2.8" ry="3" fill="white" />
-      <circle cx="52.5" cy="62.5" r="1.5" fill="#1A0E00" />
-      <circle cx="68.5" cy="62.5" r="1.5" fill="#1A0E00" />
-      <circle cx="53" cy="62" r="0.6" fill="white" />
-      <circle cx="69" cy="62" r="0.6" fill="white" />
-      <path d="M51 73 Q60 80 69 73" fill="none" stroke="#1A0E00" strokeWidth="1.8" strokeLinecap="round" />
-      {/* Mustache */}
-      <path d="M52 69 Q56 71.5 60 69.5 Q64 71.5 68 69" fill="#3D1A00" />
-      {/* Neck */}
-      <rect x="53" y="84" width="14" height="9" fill="#C68642" rx="3" />
-      {/* Sando / Sleeveless shirt */}
-      <path d="M32 93 L26 175 L94 175 L88 93 Z" fill="#E8E0D0" />
-      {/* White Apron */}
-      <path d="M42 93 L36 175 L84 175 L78 93 Z" fill="#FAFAFA" stroke="#DDD" strokeWidth="1" />
-      {/* Apron strings at top */}
-      <path d="M50 93 L60 81 L70 93" fill="none" stroke="#CCC" strokeWidth="2" />
-      {/* Apron pocket */}
-      <rect x="48" y="140" width="24" height="16" fill="#EEE" stroke="#CCC" strokeWidth="1" rx="2" />
+      <ellipse cx="80" cy="65" rx="18" ry="20" fill="#C68642" />
+      <ellipse cx="80" cy="79" rx="12" ry="7" fill="#A0693A" opacity="0.3" />
+      <ellipse cx="72" cy="62" rx="2.5" ry="3" fill="white" />
+      <ellipse cx="88" cy="62" rx="2.5" ry="3" fill="white" />
+      <circle cx="72.5" cy="62.5" r="1.5" fill="#1A0E00" />
+      <circle cx="88.5" cy="62.5" r="1.5" fill="#1A0E00" />
+      <path d="M72 73 Q80 78 88 73" fill="none" stroke="#3D1A00" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M74 69 Q80 71.5 86 69" fill="#3D1A00" stroke="#3D1A00" strokeWidth="1.5" />
+      <rect x="78" y="82" width="4" height="4" fill="#3D1A00" rx="1" />
+      <rect x="74" y="83" width="12" height="9" fill="#C68642" rx="3" />
+
+      {/* Orange Cap */}
+      <ellipse cx="80" cy="45" rx="24" ry="6" fill="#E64A19" />
+      <path d="M57 45 Q57 25 80 23 Q103 25 103 45" fill="#FF5722" />
+      <rect x="56" y="42" width="48" height="5" fill="#E64A19" />
+
+      {/* Yellow Shirt */}
+      <path d="M50 92 L44 175 L116 175 L110 92 Z" fill="#FFEB3B" />
+      <path d="M70 92 L74 99 L80 92 L86 99 L90 92" fill="none" stroke="#FBC02D" strokeWidth="2" />
+
       {/* Arms */}
-      <path d="M32 93 L18 158 Q16 165 22 167 L30 167 L40 105 Z" fill="#C68642" />
-      <path d="M88 93 L102 158 Q104 165 98 167 L90 167 L80 105 Z" fill="#C68642" />
-      {/* Hands */}
-      <ellipse cx="19" cy="169" rx="7" ry="5.5" fill="#B87030" />
-      <ellipse cx="101" cy="169" rx="7" ry="5.5" fill="#B87030" />
-      {/* Dark pants */}
-      <path d="M34 175 L32 210 L58 210 L60 192 L62 210 L88 210 L86 175 Z" fill="#3D2B1A" />
-      <line x1="60" y1="175" x2="60" y2="210" stroke="#2A1A0A" strokeWidth="1.5" />
+      <path d="M50 92 L38 145 Q38 152 44 152 L54 152 L58 105 Z" fill="#C68642" />
+      <path d="M110 92 L124 158 Q126 166 120 168 L112 168 L102 104 Z" fill="#C68642" />
+
+      {/* Brown Pants */}
+      <path d="M52 175 L50 210 L76 210 L80 190 L84 210 L110 210 L108 175 Z" fill="#5C3A1A" />
+      <line x1="80" y1="175" x2="80" y2="210" stroke="#3D2B1A" strokeWidth="1.5" />
+
       {/* Sandals */}
-      <rect x="30" y="207" width="29" height="11" fill="#5C3A1A" rx="3" />
-      <rect x="61" y="207" width="29" height="11" fill="#5C3A1A" rx="3" />
-      {/* Food Cart */}
-      <rect x="90" y="140" width="26" height="20" fill="#CC2200" rx="3" />
-      <rect x="88" y="134" width="30" height="8" fill="#AA1800" rx="2" />
-      {/* Cart items */}
-      <rect x="93" y="143" width="9" height="7" fill="#FF9900" rx="1" />
-      <rect x="104" y="143" width="9" height="7" fill="#FFCC00" rx="1" />
-      {/* Cart wheels */}
-      <circle cx="96" cy="162" r="5" fill="#2C2C2C" />
-      <circle cx="110" cy="162" r="5" fill="#2C2C2C" />
-      <circle cx="96" cy="162" r="2" fill="#555" />
-      <circle cx="110" cy="162" r="2" fill="#555" />
-      {/* Cart handle */}
-      <line x1="90" y1="140" x2="90" y2="175" stroke="#8B6914" strokeWidth="3" />
+      <rect x="48" y="207" width="29" height="12" fill="#F4A460" rx="3" />
+      <path d="M48 212 L77 212" stroke="#FF6600" strokeWidth="2" opacity="0.8" />
+      <rect x="82" y="207" width="29" height="12" fill="#F4A460" rx="3" />
+      <path d="M82 212 L111 212" stroke="#FF6600" strokeWidth="2" opacity="0.8" />
+
+      {/* ── THE CART (Front) ── */}
+      <rect x="22" y="55" width="2" height="75" fill="#444" />
+      <path d="M10 105 L23 75 L36 105 Z" fill="#FFF" stroke="#DDD" strokeWidth="1" />
+      <path d="M14 105 L23 85 L32 105 Z" fill="#4488FF" opacity="0.6" />
+      <rect x="5" y="130" width="40" height="50" fill="#B0B0B0" stroke="#808080" strokeWidth="1.5" />
+      <rect x="10" y="140" width="30" height="30" fill="none" stroke="#808080" strokeWidth="1" />
+      <circle cx="34" cy="155" r="1.5" fill="#808080" />
+      <circle cx="25" cy="188" r="12" fill="#333" stroke="#222" strokeWidth="1" />
+      <circle cx="25" cy="188" r="3" fill="#808080" />
+      <rect x="45" y="145" width="15" height="4" fill="#007744" rx="2" />
     </svg>
   );
 }
