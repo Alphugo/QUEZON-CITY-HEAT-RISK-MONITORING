@@ -13,8 +13,9 @@ import {
   TrafficEnforcer,
   Student,
   StreetVendor,
-  Civilian,        // ← NEW
+  Civilian,
 } from "./Characters";
+import type { Mood } from "./Characters";
 import { RiskInfo, getDoleText, SUBJECTS } from "./heatUtils";
 import { CityScene } from "./CityScene";
 
@@ -24,7 +25,7 @@ const CharacterComponents = [
   StreetVendor,
   TrafficEnforcer,
   Student,
-  Civilian,        // ← index 4
+  Civilian,
 ];
 
 interface CenterPanelProps {
@@ -47,6 +48,12 @@ export function CenterPanel({
   const Char     = CharacterComponents[selectedSubject];
   const subject  = SUBJECTS[selectedSubject];
   const doleText = getDoleText(risk.level, subject.label);
+
+  // Derive mood from risk level
+  const mood: Mood =
+    risk.level === "SAFE" || risk.level === "CAUTION" ? "happy"
+    : risk.level === "EXTREME CAUTION" ? "neutral"
+    : "stressed";
 
   // ── Risk level boolean flags (used throughout for effect gating) ───────────
   // All visual effects are keyed to these exact DOLE/PAGASA thresholds
@@ -207,7 +214,7 @@ export function CenterPanel({
                   transition={{ duration: isExtreme ? 0.6 : isDanger ? 1 : 2, repeat: Infinity, ease: "easeInOut" }}
                 />
               )}
-              <Char />
+              <Char mood={mood} />
             </motion.div>
           </AnimatePresence>
         </div>

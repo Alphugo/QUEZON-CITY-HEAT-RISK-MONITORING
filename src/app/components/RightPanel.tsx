@@ -105,7 +105,7 @@ function FormulaInfo({
   environmentalHI: number;
   effectiveHI:     number;
 }) {
-  const formulaActive = temperature >= 27 && humidity >= 25;
+  const formulaActive = temperature >= 27 && humidity >= 40;
   const delta         = effectiveHI - temperature;
 
   return (
@@ -138,7 +138,7 @@ function FormulaInfo({
         <div className="mb-1" style={{ color: "rgba(255,200,0,0.6)", fontSize: 10 }}>
           {temperature < 27
             ? "T < 27°C — apparent temp ≈ ambient"
-            : "RH < 25% — evaporation too efficient"}
+            : "RH < 40% — evaporation too efficient"}
         </div>
       )}
 

@@ -62,6 +62,10 @@ export const SUBJECTS = [
  * Converts C to F, applies Steadman/Rothfusz regression with adjustments, returns C
  */
 export function calcHeatIndex(tempC: number, humidity: number): number {
+  // Below these thresholds, apparent temperature ≈ ambient temperature.
+  // Rothfusz regression is not valid for low-humidity or cool conditions.
+  if (tempC < 27 || humidity < 40) return tempC;
+
   const T = (tempC * 9) / 5 + 32;
   const R = humidity;
 

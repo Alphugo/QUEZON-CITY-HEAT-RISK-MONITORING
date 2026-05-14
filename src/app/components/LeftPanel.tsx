@@ -85,18 +85,18 @@ function TemperatureControl({
   const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     setRawValue(raw);
-    const parsed = parseInt(raw, 10);
+    const parsed = parseFloat(raw);
     if (!isNaN(parsed) && parsed >= 20 && parsed <= 58) {
-      setTemperature(parsed);
+      setTemperature(Math.round(parsed * 10) / 10);
     }
   };
 
   const handleCommit = () => {
-    const parsed = parseInt(rawValue, 10);
+    const parsed = parseFloat(rawValue);
     if (isNaN(parsed) || parsed < 20 || parsed > 58) {
       setRawValue(String(temperature)); // revert
     } else {
-      setTemperature(Math.min(58, Math.max(20, parsed)));
+      setTemperature(Math.round(Math.min(58, Math.max(20, parsed)) * 10) / 10);
     }
     setEditing(false);
   };
@@ -105,11 +105,11 @@ function TemperatureControl({
     if (e.key === "Enter" || e.key === "Escape") handleCommit();
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      setTemperature(Math.min(58, temperature + 1));
+      setTemperature(Math.min(58, Math.round((temperature + 0.1) * 10) / 10));
     }
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setTemperature(Math.max(20, temperature - 1));
+      setTemperature(Math.max(20, Math.round((temperature - 0.1) * 10) / 10));
     }
   };
 
@@ -143,11 +143,14 @@ function TemperatureControl({
             </defs>
           </svg>
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10" style={{ pointerEvents: "auto" }}>
             {editing ? (
               <input
                 ref={inputRef}
                 type="number"
+                min={20}
+                max={58}
+                step={0.1}
                 value={rawValue}
                 onChange={handleManualChange}
                 onBlur={handleCommit}
@@ -161,14 +164,14 @@ function TemperatureControl({
               />
             ) : (
               <motion.span
-                key={temperature}
+                key={Math.round(temperature)}
                 onClick={() => setEditing(true)}
                 className="font-black leading-none cursor-pointer"
                 style={{ fontSize: 28, color: "#FF8C00", textShadow: "0 0 20px rgba(255,140,0,0.8)" }}
                 initial={{ scale: 1.15 }}
                 animate={{ scale: 1 }}
               >
-                {temperature}°
+                {temperature.toFixed(1)}°
               </motion.span>
             )}
             <span className="text-[10px] font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>
@@ -181,10 +184,11 @@ function TemperatureControl({
           type="range"
           min={20}
           max={58}
+          step={0.1}
           value={temperature}
           onChange={(e) => {
             setEditing(false);
-            setTemperature(Number(e.target.value));
+            setTemperature(Math.round(Number(e.target.value) * 10) / 10);
           }}
           className="w-full cursor-pointer"
         />
@@ -194,6 +198,70 @@ function TemperatureControl({
         </div>
       </div>
     </SectionCard>
+  );
+}
+// ── Humidity Display (clickable value with manual input) ──────────────────────
+function HumidityDisplay({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const [editing, setEditing]   = useState(false);
+  const [rawValue, setRawValue] = useState(String(value));
+  const inputRef                = useRef<HTMLInputElement>(null);
+
+  useEffect(() => { if (!editing) setRawValue(value.toFixed(1)); }, [value, editing]);
+  useEffect(() => { if (editing) inputRef.current?.focus(); }, [editing]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setRawValue(raw);
+    const parsed = parseFloat(raw);
+    if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+      onChange(Math.round(parsed * 10) / 10);
+    }
+  };
+
+  const handleCommit = () => {
+    const parsed = parseFloat(rawValue);
+    if (isNaN(parsed) || parsed < 0 || parsed > 100) {
+      setRawValue(value.toFixed(1));
+    } else {
+      onChange(Math.round(Math.min(100, Math.max(0, parsed)) * 10) / 10);
+    }
+    setEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === "Escape") handleCommit();
+  };
+
+  return (
+    <div className="flex items-baseline gap-2 mb-3">
+      {editing ? (
+        <input
+          ref={inputRef}
+          type="number"
+          step="0.1"
+          min="0"
+          max="100"
+          value={rawValue}
+          onChange={handleChange}
+          onBlur={handleCommit}
+          onKeyDown={handleKeyDown}
+          className="font-black bg-transparent border-none focus:outline-none w-24"
+          style={{ fontSize: 32, color: "#00E5FF", textShadow: "0 0 15px rgba(0,229,255,0.6)" }}
+        />
+      ) : (
+        <span
+          className="font-black cursor-pointer"
+          onClick={() => setEditing(true)}
+          style={{ fontSize: 32, color: "#00E5FF", textShadow: "0 0 15px rgba(0,229,255,0.6)", lineHeight: 1 }}
+        >
+          {value.toFixed(1)}
+        </span>
+      )}
+      <span className="font-bold text-base" style={{ color: "rgba(0,229,255,0.6)" }}>%</span>
+      <span className="text-xs ml-auto" style={{ color: "rgba(255,255,255,0.3)" }}>
+        {editing ? "ENTER %" : "↕ drag tube"}
+      </span>
+    </div>
   );
 }
 
@@ -208,7 +276,7 @@ function HumidityTube({ value, onChange }: { value: number; onChange: (v: number
       if (!tubeRef.current) return;
       const r   = tubeRef.current.getBoundingClientRect();
       const pct = 1 - (clientY - r.top) / r.height;
-      onChange(Math.round(Math.max(0, Math.min(100, pct * 100))));
+      onChange(Math.round(Math.max(0, Math.min(100, pct * 100)) * 10) / 10);
     },
     [onChange]
   );
@@ -310,17 +378,8 @@ export function LeftPanel({
       {/* ── Humidity ── */}
       <SectionCard>
         <Label>Relative Humidity</Label>
-        {/* Value display */}
-        <div className="flex items-baseline gap-2 mb-3">
-          <span
-            className="font-black"
-            style={{ fontSize: 32, color: "#00E5FF", textShadow: "0 0 15px rgba(0,229,255,0.6)", lineHeight: 1 }}
-          >
-            {humidity}
-          </span>
-          <span className="font-bold text-base" style={{ color: "rgba(0,229,255,0.6)" }}>%</span>
-          <span className="text-xs ml-auto" style={{ color: "rgba(255,255,255,0.3)" }}>↕ drag tube</span>
-        </div>
+        {/* Clickable value display with manual input */}
+        <HumidityDisplay value={humidity} onChange={setHumidity} />
         {/* Drag tube */}
         <HumidityTube value={humidity} onChange={setHumidity} />
       </SectionCard>
