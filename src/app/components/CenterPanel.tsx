@@ -19,13 +19,28 @@ import type { Mood } from "./Characters";
 import { RiskInfo, getDoleText, SUBJECTS } from "./heatUtils";
 import { CityScene } from "./CityScene";
 
-// Map subject index → character component (must match SUBJECTS array order)
 const CharacterComponents = [
   ConstructionWorker,
   StreetVendor,
   TrafficEnforcer,
   Student,
   Civilian,
+];
+
+const CAMERA_POSITIONS: [number, number, number][] = [
+  [-103.50, 511.85, 4840.26], // 0: worker
+  [1485.42, 725.79, 372.65],  // 1: vendor
+  [2003.43, 698.99, 901.56],  // 2: enforcer
+  [3648.48, 691.55, -3868.29],// 3: student
+  [3208.06, 624.23, 3487.54]  // 4: civilian
+];
+
+const CAMERA_TARGETS: [number, number, number][] = [
+  [-152.38, 1087.19, -320.48], // 0: worker
+  [1253.06, 716.36, 123.08],   // 1: vendor
+  [387.72, 629.70, 301.69],    // 2: enforcer
+  [-672.34, 298.51, 100.80],   // 3: student
+  [1075.01, 1009.62, -1140.06] // 4: civilian
 ];
 
 interface CenterPanelProps {
@@ -171,7 +186,11 @@ export function CenterPanel({
           style={{ filter: (isExtCaution || isDangerPlus) ? "url(#heat-distortion)" : "none" }}
         >
           {/* 3D City Background */}
-          <CityScene temperature={environmentalHI} />
+          <CityScene 
+            temperature={environmentalHI} 
+            cameraPos={CAMERA_POSITIONS[selectedSubject]}
+            cameraTarget={CAMERA_TARGETS[selectedSubject]}
+          />
 
           {/* Character — z-[10] */}
           <AnimatePresence mode="wait">

@@ -151,7 +151,7 @@ function DynamicEnvironment({ temperature }: EnvironmentProps) {
 // CITY MODEL — loads GLB, enables shadows, auto-fits camera
 // ──────────────────────────────────────────────────────
 
-function CityModel() {
+function CityModel({ cameraPos, cameraTarget }: { cameraPos?: [number, number, number]; cameraTarget?: [number, number, number] }) {
   const { scene } = useGLTF("/models/city.glb");
   const { camera, invalidate } = useThree();
 
@@ -164,25 +164,31 @@ function CityModel() {
       }
     });
 
-    // Auto-fit camera to the model's bounding box
-    const box = new THREE.Box3().setFromObject(scene);
-    const center = new THREE.Vector3();
-    const size = new THREE.Vector3();
-    box.getCenter(center);
-    box.getSize(size);
+    if (cameraPos && cameraTarget) {
+      camera.position.set(...cameraPos);
+      camera.lookAt(...cameraTarget);
+      camera.updateProjectionMatrix();
+    } else {
+      // Auto-fit camera to the model's bounding box
+      const box = new THREE.Box3().setFromObject(scene);
+      const center = new THREE.Vector3();
+      const size = new THREE.Vector3();
+      box.getCenter(center);
+      box.getSize(size);
 
-    const maxDim = Math.max(size.x, size.y, size.z);
-    camera.position.set(
-      center.x + maxDim * 0.25,
-      center.y + maxDim * 0.15,
-      center.z + maxDim * 0.25
-    );
-    camera.lookAt(center);
-    camera.near = maxDim * 0.01;
-    camera.far = maxDim * 10;
-    camera.updateProjectionMatrix();
+      const maxDim = Math.max(size.x, size.y, size.z);
+      camera.position.set(
+        center.x + maxDim * 0.25,
+        center.y + maxDim * 0.15,
+        center.z + maxDim * 0.25
+      );
+      camera.lookAt(center);
+      camera.near = maxDim * 0.01;
+      camera.far = maxDim * 10;
+      camera.updateProjectionMatrix();
+    }
     invalidate();
-  }, [scene, camera, invalidate]);
+  }, [scene, camera, invalidate, cameraPos, cameraTarget]);
 
   return <primitive object={scene} />;
 }
@@ -191,7 +197,15 @@ function CityModel() {
 // EXPORTED COMPONENT
 // ──────────────────────────────────────────────────────
 
-export function CityScene({ temperature }: { temperature: number }) {
+export function CityScene({ 
+  temperature,
+  cameraPos,
+  cameraTarget
+}: { 
+  temperature: number;
+  cameraPos?: [number, number, number];
+  cameraTarget?: [number, number, number];
+}) {
   return (
     <Canvas
       shadows
@@ -202,19 +216,21 @@ export function CityScene({ temperature }: { temperature: number }) {
     >
       <DynamicEnvironment temperature={temperature} />
       <Suspense fallback={null}>
-        <CityModel />
+        <CityModel cameraPos={cameraPos} cameraTarget={cameraTarget} />
       </Suspense>
       {/* Still draggable — logs position to console so you can find your angle */}
       <OrbitControls
+        target={cameraTarget}
         enableZoom={true}
         enablePan={true}
         enableRotate={true}
         autoRotate={false}
         onChange={(e) => {
           const cam = e?.target.object;
-          if (cam) {
+          const target = e?.target.target;
+          if (cam && target) {
             console.log(
-              `Camera: [${cam.position.x.toFixed(2)}, ${cam.position.y.toFixed(2)}, ${cam.position.z.toFixed(2)}]`
+              `Camera: [${cam.position.x.toFixed(2)}, ${cam.position.y.toFixed(2)}, ${cam.position.z.toFixed(2)}] Target: [${target.x.toFixed(2)}, ${target.y.toFixed(2)}, ${target.z.toFixed(2)}]`
             );
           }
         }}
