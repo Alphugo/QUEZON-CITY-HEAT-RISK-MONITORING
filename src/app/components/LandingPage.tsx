@@ -75,13 +75,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
 
           {/* All 5 characters standing in a row */}
           <div
-            className="flex items-end justify-center gap-1 relative z-20"
+            className="flex items-end justify-center gap-1 sm:gap-4 relative z-20"
             style={{ marginBottom: "-6px" }}
           >
             {characters.map(({ Component, delay }, i) => (
               <motion.div
                 key={i}
-                style={{ width: 80, height: 126 }}
+                className="w-[15vw] h-[24vw] max-w-[80px] max-h-[126px] min-w-[50px] min-h-[80px]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay, duration: 0.6, ease: "easeOut" }}
@@ -106,13 +106,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 filter:     "blur(18px)",
               }}
             />
-            {/* Banner body */}
             <div
-              className="relative px-14 py-5 rounded-[2rem]"
+              className="relative px-6 sm:px-14 py-3 sm:py-5 rounded-2xl sm:rounded-[2rem]"
               style={{ background: "linear-gradient(90deg, #C94A00, #FF8C00, #FFB800, #FF8C00, #C94A00)" }}
             >
               <motion.h1
-                className="text-4xl font-black text-white tracking-widest text-center whitespace-nowrap"
+                className="text-xl sm:text-3xl md:text-4xl font-black text-white tracking-widest text-center"
                 style={{ textShadow: "0 0 30px rgba(255,220,0,0.8), 0 4px 12px rgba(0,0,0,0.6)" }}
                 animate={{
                   textShadow: [
@@ -157,7 +156,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           />
           {/* Button face */}
           <div
-            className="relative px-20 py-5 rounded-full"
+            className="relative px-10 sm:px-20 py-3 sm:py-5 rounded-full"
             style={{ background: "linear-gradient(135deg, #FF8C00, #FF6B00, #CC4400)" }}
           >
             {/* Shine sweep */}
@@ -168,7 +167,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
             />
             <span
-              className="relative text-4xl font-black text-white tracking-[0.3em]"
+              className="relative text-2xl sm:text-4xl font-black text-white tracking-[0.3em]"
               style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 0 20px rgba(255,200,0,0.4)" }}
             >
               START

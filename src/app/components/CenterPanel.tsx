@@ -95,7 +95,7 @@ export function CenterPanel({
   const heartRateScale     = 1 + (stressFactor * 0.5); // Animation speed multiplier
 
   return (
-    <div className="flex flex-col gap-3 h-full" style={{ minWidth: 0 }}>
+    <div className="flex flex-col gap-3 h-auto lg:h-full" style={{ minWidth: 0 }}>
 
 
       {/* ── Risk Level Banner ───────────────────────────────────────────────── */}
@@ -148,11 +148,10 @@ export function CenterPanel({
 
       {/* ── Character Display Area ──────────────────────────────────────────── */}
       <div
-        className="relative flex-1 rounded-2xl overflow-hidden flex items-end justify-center"
+        className="relative h-[500px] sm:h-[600px] lg:flex-1 rounded-2xl overflow-hidden flex items-end justify-center"
         style={{
           background: "#0A1628",
           border:     `1px solid ${risk.color}22`,
-          minHeight:  200,
         }}
       >
         {/* SVG filter definition for heat distortion effect */}
@@ -197,7 +196,7 @@ export function CenterPanel({
             <motion.div
               key={selectedSubject}
               className="relative z-[10]"
-              style={{ width: 300, height: 460 }}
+              style={{ width: "min(300px, 60vw)", height: "min(460px, 90vw)" }}
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{
                 opacity: 1,
@@ -535,7 +534,7 @@ export function CenterPanel({
       {/* ── DOLE Protocol Advisory Box ──────────────────────────────────────── */}
       <motion.div
         key={risk.level}
-        className="rounded-2xl p-4"
+        className="rounded-2xl p-4 mb-4 lg:mb-0" // Added bottom margin for mobile
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -567,7 +566,7 @@ export function CenterPanel({
             </p>
 
             {/* Work / Rest schedule pills */}
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               {(
                 [
                   ["WORK", risk.work, risk.level === "EXTREME DANGER" ? "#FF0033" : "white"],
@@ -576,14 +575,14 @@ export function CenterPanel({
               ).map(([label, value, colour]) => (
                 <div
                   key={label}
-                  className="flex-1 rounded-xl p-2 text-center"
+                  className="flex-1 rounded-xl p-1.5 sm:p-2 text-center"
                   style={{
                     background: "rgba(255,255,255,0.05)",
                     border:     "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
-                  <div className="text-xs mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>{label}</div>
-                  <div className="font-black text-base" style={{ color: colour }}>{value}</div>
+                  <div className="text-[10px] sm:text-xs mb-0.5 sm:mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>{label}</div>
+                  <div className="font-black text-sm sm:text-base" style={{ color: colour }}>{value}</div>
                 </div>
               ))}
             </div>

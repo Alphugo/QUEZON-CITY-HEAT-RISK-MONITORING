@@ -50,13 +50,13 @@ export function SimulatorDashboard({
 
       {/* Top Bar */}
       <div
-        className="relative z-20 flex items-center justify-between px-6 py-3 flex-shrink-0"
+        className="relative z-20 flex items-center justify-between px-4 sm:px-6 py-2 sm:py-3 flex-shrink-0"
         style={{ borderBottom: "1px solid rgba(0,229,255,0.1)", background: "rgba(10,22,40,0.6)", backdropFilter: "blur(10px)" }}
       >
         {onBack && (
           <motion.button
             onClick={onBack}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer"
+            className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 rounded-xl cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{
@@ -65,32 +65,32 @@ export function SimulatorDashboard({
               color: "rgba(255,255,255,0.8)",
             }}
           >
-            <Home size={16} />
-            <span className="text-sm font-bold">Home</span>
+            <Home size={14} className="sm:w-4 sm:h-4" />
+            <span className="text-[10px] sm:text-sm font-bold">Home</span>
           </motion.button>
         )}
 
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full" style={{ background: "#FF6B00", boxShadow: "0 0 8px rgba(255,107,0,0.9)" }} />
-          <h1 className="font-black tracking-widest text-xs sm:text-sm uppercase text-center" style={{ color: "rgba(255,255,255,0.9)" }}>
+        <div className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-2">
+          <div className="hidden sm:block w-2 h-2 rounded-full" style={{ background: "#FF6B00", boxShadow: "0 0 8px rgba(255,107,0,0.9)" }} />
+          <h1 className="font-black tracking-widest text-[10px] sm:text-sm uppercase text-center truncate max-w-[150px] sm:max-w-none" style={{ color: "rgba(255,255,255,0.9)" }}>
             QC Heat Risk Monitor
           </h1>
-          <div className="w-2 h-2 rounded-full" style={{ background: "#FF6B00", boxShadow: "0 0 8px rgba(255,107,0,0.9)" }} />
+          <div className="hidden sm:block w-2 h-2 rounded-full" style={{ background: "#FF6B00", boxShadow: "0 0 8px rgba(255,107,0,0.9)" }} />
         </div>
 
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <motion.div
-            className="w-2 h-2 rounded-full"
+            className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
             style={{ background: "#00FF88" }}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ duration: 1.2, repeat: Infinity }}
           />
-          <span className="text-[10px] sm:text-xs font-bold" style={{ color: "rgba(0,255,136,0.8)" }}>LIVE</span>
+          <span className="text-[8px] sm:text-xs font-bold" style={{ color: "rgba(0,255,136,0.8)" }}>LIVE</span>
         </div>
       </div>
 
       {/* Main Layout - Stacks on mobile, Side-by-side on large screens */}
-      <div className="relative z-10 flex-1 flex flex-col lg:flex-row gap-4 p-4 overflow-y-auto lg:overflow-hidden">
+      <div className="relative z-10 flex-1 flex flex-col lg:flex-row gap-6 sm:gap-4 p-4 sm:p-6 overflow-y-auto lg:overflow-hidden">
         
         {/* LEFT — Environment Controls */}
         <div className="w-full lg:w-[24%] lg:overflow-y-auto lg:flex-shrink-0 order-2 lg:order-1">
@@ -102,7 +102,7 @@ export function SimulatorDashboard({
         </div>
 
         {/* CENTER — Visual Display */}
-        <div className="flex-1 min-h-[400px] lg:min-h-0 lg:overflow-hidden order-1 lg:order-2">
+        <div className="w-full lg:flex-1 min-h-[400px] lg:min-h-0 lg:overflow-hidden order-1 lg:order-2">
           <CenterPanel
             risk={risk}
             selectedSubject={selectedSubject}
@@ -127,5 +127,3 @@ export function SimulatorDashboard({
     </div>
   );
 }
-
-

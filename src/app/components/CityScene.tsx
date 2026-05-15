@@ -166,6 +166,18 @@ function CityModel({ cameraPos, cameraTarget }: { cameraPos?: [number, number, n
 
     if (cameraPos && cameraTarget) {
       camera.position.set(...cameraPos);
+      
+      // Responsive adjustment: Push camera back significantly to ensure character is framed
+      const aspect = window.innerWidth / window.innerHeight;
+      const pushDistance = aspect < 1 ? 3000 : 1800; // Even further back on mobile
+      
+      const direction = new THREE.Vector3().subVectors(
+        new THREE.Vector3(...cameraPos),
+        new THREE.Vector3(...cameraTarget)
+      ).normalize();
+      
+      camera.position.addScaledVector(direction, pushDistance);
+
       camera.lookAt(...cameraTarget);
       camera.updateProjectionMatrix();
     } else {
@@ -177,10 +189,13 @@ function CityModel({ cameraPos, cameraTarget }: { cameraPos?: [number, number, n
       box.getSize(size);
 
       const maxDim = Math.max(size.x, size.y, size.z);
+      const aspect = window.innerWidth / window.innerHeight;
+      const factor = aspect < 1 ? 0.45 : 0.25; // Zoom out more on portrait
+
       camera.position.set(
-        center.x + maxDim * 0.25,
+        center.x + maxDim * factor,
         center.y + maxDim * 0.15,
-        center.z + maxDim * 0.25
+        center.z + maxDim * factor
       );
       camera.lookAt(center);
       camera.near = maxDim * 0.01;
@@ -211,7 +226,8 @@ export function CityScene({
       shadows
       style={{ position: "absolute", inset: 0, zIndex: 0 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      camera={{ fov: 45, near: 0.1, far: 100000 }}
+      camera={{ position: [0, 20, 40], fov: 75, near: 0.1, far: 100000 }}
+      dpr={[1, 2]}
       resize={{ debounce: 0 }}
     >
       <DynamicEnvironment temperature={temperature} />
