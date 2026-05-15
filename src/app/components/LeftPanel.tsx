@@ -117,8 +117,8 @@ function TemperatureControl({
     <SectionCard>
       <Label>Air Temperature</Label>
       <div className="flex flex-col items-center gap-2">
-        <div className="relative" style={{ width: "min(110px, 25vw)", height: "min(110px, 25vw)" }}>
-          <svg width="100%" height="100%" viewBox="0 0 100 100">
+        <div className="relative" style={{ width: 110, height: 110 }}>
+          <svg width="110" height="110" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
             <circle
               cx="50" cy="50" r="38"
@@ -155,9 +155,9 @@ function TemperatureControl({
                 onChange={handleManualChange}
                 onBlur={handleCommit}
                 onKeyDown={handleKeyDown}
-                className="font-black text-center bg-transparent border-none focus:outline-none w-full"
+                className="font-black text-center bg-transparent border-none focus:outline-none w-24"
                 style={{
-                  fontSize:   "clamp(1.2rem, 5vw, 1.75rem)",
+                  fontSize:   28,
                   color:      "#FF8C00",
                   textShadow: "0 0 20px rgba(255,140,0,0.8)",
                 }}
@@ -167,7 +167,7 @@ function TemperatureControl({
                 key={Math.round(temperature)}
                 onClick={() => setEditing(true)}
                 className="font-black leading-none cursor-pointer"
-                style={{ fontSize: "clamp(1.2rem, 5vw, 1.75rem)", color: "#FF8C00", textShadow: "0 0 20px rgba(255,140,0,0.8)" }}
+                style={{ fontSize: 28, color: "#FF8C00", textShadow: "0 0 20px rgba(255,140,0,0.8)" }}
                 initial={{ scale: 1.15 }}
                 animate={{ scale: 1 }}
               >
@@ -389,7 +389,7 @@ export function LeftPanel({
       <SectionCard>
         <Label>Select Subject</Label>
         {/* 5 subjects → 2-col grid (last button spans if odd count) */}
-        <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {SUBJECTS.map((s, i) => (
             <button
               key={s.id}
